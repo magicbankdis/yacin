@@ -27,6 +27,7 @@ const sql = require("sqlite");
 ,spee={};
 
 
+client.on('error', (e) => console.log(e))
 
 var guilds = {};
 client.on('guildBanAdd', function(guild) {
