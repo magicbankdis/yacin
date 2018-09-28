@@ -2432,5 +2432,41 @@ client.on("message", (message) => {
     }
 });  
 
+function scrapeNexts(url, oncomplete) {
+    request(url, function (err, resp, body) {
+
+        if (err) {
+            console.log("Uh-oh, ScrapeNexts Error!: " + err + " using " + url);
+            errors.nexts.push(url);
+        }
+        async.series([
+                function (callback) {
+                    $ = cheerio.load(body);
+                    callback();
+                },
+                function (callback) {
+                    $(prodURL).each(function () {
+                        var theHref = $(this).attr('href');
+                        urls.push(baseURL + theHref);
+                    });
+                    var next = $(next_select).first().attr('href');
+                    oncomplete(next);
+                }
+            ]);
+    });
+}
+
+function scrapeNexts(url, oncomplete) {
+    request(url, function(err, resp, body) {
+
+        if (err) {
+            console.log("Uh-oh, ScrapeNexts Error!: " + err + " using " + url);
+            errors.nexts.push(url);
+        }
+        $ = cheerio.load(body);
+        // do stuff with the '$' cheerio content here
+    });
+}
+
 // THIS  MUST  BE  THIS  WAY
 client.login(process.env.BOT_TOKEN);
